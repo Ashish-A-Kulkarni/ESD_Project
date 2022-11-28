@@ -16,7 +16,5 @@
         <mapping class="com.academia.coursecreation.Bean.Employee"/>
         <mapping class="com.academia.coursecreation.Bean.Courses"/>
         <mapping class="com.academia.coursecreation.Bean.Specialisation"/>
-        <mapping class="com.academia.coursecreation.Bean.Course_Prerequisite"/>
-        <mapping class="com.academia.coursecreation.Bean.Specialisation_Course"/>
     </session-factory>
 </hibernate-configuration>

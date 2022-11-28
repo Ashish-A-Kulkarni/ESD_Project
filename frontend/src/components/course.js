@@ -1,5 +1,7 @@
 import React, { useEffect,useState } from 'react'
-import axios from "axios";
+// import Multiselect from 'multiselect-react-dropdown'
+
+// import axios from "axios";
 
 const MyForm = ({ enterCourse }) =>  {
 
@@ -12,58 +14,54 @@ const MyForm = ({ enterCourse }) =>  {
   const [ credits, setCredits ] = useState('')
   const [ capacity, setCapacity ] = useState('')
   const [ specialisation, setspecialisation ] = useState('');
-  const [ selectedPrerequisite, setSelectedPrerequisite] = useState([]);
-  const [ selectedPrerequisiteId, setSelectedPrerequisiteId] = useState([]);
-  const [ savedSpecialisationList, setSavedSpecialisationList] = useState([]);
-  const [ savedCourseList, setSavedCourseList] = useState([]);
+  const [ prerequisites, setPrerequisite] = useState('');
+  const [ prerequisiteList, setprerequisiteList] = useState([]);
+  const [specialisationList,setspecialisationList]=useState([]);
 
-  
+  useEffect(() =>{
+    const fetchData = async ()=>{
+        const response = await fetch(`http://localhost:8080/billPayment-1.0-SNAPSHOT/api/courses/getSpecialisation`);
+        const newData = await response.json();
+        console.log("");
+        setspecialisationList(newData);
+        // console.log(newData);
+    };
+    fetchData();
+}, [])
 
-  async function getSpecialisations(){
-    await axios.get("http://localhost:8080/billPayment-1.0-SNAPSHOT/api/courses/getSpecialisation", {})
-        .then(
-            (response) => {
-                console.log(response);
-                if(response.status === 200){
-                    setSavedSpecialisationList(response.data);
-                }
-            },
-            (error) => {
-                console.log(error);
-            }
-        );
-}
-async function getCourses(){
-    await axios.get("http://localhost:8080/ESD_Project-1.0-SNAPSHOT/api/course/getCourses", {})
-        .then(
-            (response) => {
-                console.log(response);
-                if(response.status === 200){
-                    setSavedCourseList(response.data);
-                }
-            },
-            (error) => {
-                console.log(error);
-            }
-        );
-}
-getSpecialisations();
-getCourses();
+useEffect(() =>{
+  const fetchData = async ()=>{
+      const response = await fetch(`http://localhost:8080/billPayment-1.0-SNAPSHOT/api/courses/get_all`);
+      const newData = await response.json();
+      console.log("");
+      setprerequisiteList(newData);
+      console.log(newData);
+  };
+  fetchData();
+}, [])
+
 
 
 const handlespecialisation = (event) => {
   setspecialisation(event.target.value);
+  console.log(specialisation)
 }
 
+const handlePrerequisite = (event) => {
+  setPrerequisite(event.target.value);
+  console.log(prerequisites)
+
+}
   // onSubmit event handler of this form
   const handleCourse = (event) => {
     // Preventing default submission of the form to the action attribute URL
     event.preventDefault()
 
     const courseObject = {
-      course_code,name,description,year,term,credits,capacity,specialisation:{specialisationId:specialisation}
+      course_code,name,description,year,term,credits,capacity,specialisation:{specialisation_id:specialisation},prerequisites:([{course_id:prerequisites}])
     }
 
+    console.log(courseObject)
     // Calling startLogin with the provided credentials that will make a call to the backend
     enterCourse(courseObject)
 
@@ -77,15 +75,25 @@ const handlespecialisation = (event) => {
     setTerm('')
     setYear('')
     setspecialisation("")
-    setSelectedPrerequisite([])
+    setPrerequisite("")
   }
 
   return (
 
-    
+  
+    <div className='form-container'>
+    <div className='form-box regular-shadow'>
+
+    <br></br>
+    <br></br>    
 
     <form onSubmit={handleCourse}>
-      <label>Enter course code:
+
+      <table align='center' textalign='center'>
+
+       <tr> 
+        
+        <label>Enter course code:
       <input 
         type="text" 
         name="course_code" 
@@ -94,6 +102,8 @@ const handlespecialisation = (event) => {
       />
       </label>
       
+      </tr>
+      <tr>
       <label>Enter course name:
       <input 
         type="text" 
@@ -102,7 +112,8 @@ const handlespecialisation = (event) => {
         onChange={event => setName(event.target.value)}
       />
       </label>
-
+      </tr>
+      <tr>
       <label>Enter course description:
       <input 
         type="text" 
@@ -111,7 +122,8 @@ const handlespecialisation = (event) => {
         onChange={event => setDescription(event.target.value)}
       />
       </label>
-
+      </tr>
+      <tr>
       <label>Enter course year:
       <input 
         type="text" 
@@ -120,7 +132,8 @@ const handlespecialisation = (event) => {
         onChange={event => setYear(event.target.value)}
       />
       </label>
-
+      </tr>
+      <tr>
       <label>Enter course term:
       <input 
         type="text" 
@@ -129,7 +142,8 @@ const handlespecialisation = (event) => {
         onChange={event => setTerm(event.target.value)}
       />
       </label>
-
+      </tr>
+      <tr>
       <label>Enter course credits:
       <input 
         type="number" 
@@ -138,7 +152,8 @@ const handlespecialisation = (event) => {
         onChange={event => setCredits(event.target.value)}
       />
       </label>
-
+      </tr>
+      <tr>
       <label>Enter course capacity:
         <input 
           type="number" 
@@ -147,9 +162,45 @@ const handlespecialisation = (event) => {
           onChange={event => setCapacity(event.target.value)}
         />
         </label>
-        
+        </tr>
+        <tr>
+            <label className="form__label" for="Specialisation">Specialisation </label>
+            <select className="form-control" value={specialisation} onChange={handlespecialisation}>
+                    <option value="">Select Specialisation</option>
+                    {/* <option>Faculty</option> */}
+
+                             {specialisationList.map(specialisation => (
+                                <option value={specialisation.specialisation_id} key={specialisation.specialisation_id} >{specialisation.name}</option>
+                                ))
+                            } 
+
+            </select>
+          </tr>
+          <tr>
+            <label className="form__label" for="Prerequisite">Prerequisute </label>
+            <select className="form-control" value={prerequisites} onChange={handlePrerequisite}>
+                    <option value="">Select Prerequisite</option>
+                    {/* <option>Faculty</option> */}
+
+                             {prerequisiteList.map(prerequisites => (
+                                <option value={prerequisites.course_id} key={prerequisites.course_id} > {prerequisites.name}</option>
+                                ))
+                            } 
+
+          
+            </select>        
+
+            </tr>
+            <tr>
+              <br></br>
         <input type="submit" />
+        </tr>
+        </table>
+        <br></br>
+    <br></br>
     </form>
+    </div>
+    </div>
   )
 }
 

@@ -29,7 +29,7 @@ const App = () => {
     setTimeout(() => {
       setNotificationType(null)
       setNotification(null)
-    }, 3000)
+    }, 5000)
   }
 
   // Function that handles login of users
@@ -53,7 +53,7 @@ const App = () => {
       
       await courseService.createCourse(courseObject)
 
-      notificationHandler('Course Created successfully','success')
+      notificationHandler('Course Added successfully','success')
     }
     catch (exception) {
       notificationHandler(`Course Creation Failed`, 'error')

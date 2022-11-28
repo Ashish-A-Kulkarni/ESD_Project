@@ -53,7 +53,7 @@ public class Courses {
 
     }
 
-    public Courses(int course_id, String course_code, String name, String description, String year, String term, int credits, int capacity,Specialisation specialisation, List<Courses> prerequisites){
+    public Courses(String course_code, String name, String description, String year, String term, int credits, int capacity,Specialisation specialisation, List<Courses> prerequisites){
         this.course_id=course_id;
         this.course_code=course_code;
         this.name=name;
@@ -66,6 +66,9 @@ public class Courses {
         this.prerequisites=prerequisites;
     }
 
+    public int getCourse_id() {
+        return course_id;
+    }
 
     public String getCourse_code() {
         return course_code;

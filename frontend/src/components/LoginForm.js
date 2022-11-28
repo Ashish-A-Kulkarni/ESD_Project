@@ -30,7 +30,12 @@ const LoginForm = ({ startLogin }) => {
 
   // Typically keep id attributes on your HTML elements so that they can be styled using CSS
   return (
-    <form onSubmit={handleLogin} id='login-form'>
+    <form onSubmit={handleLogin} id='login-form' align='center'>
+      <br></br>
+      <br></br>
+      <br></br>
+      <label> Enter Email ID </label>
+      <br></br>
       <input 
         type='email'
         placeholder='Email'
@@ -47,6 +52,10 @@ const LoginForm = ({ startLogin }) => {
       />
         
       {/* Same as the above username input, except this one has the type password */}
+      <br></br>
+      <br></br>
+      <label>Enter Your Password</label>
+      <br></br>
       <input
         type='password'
         placeholder='Password'
@@ -55,8 +64,8 @@ const LoginForm = ({ startLogin }) => {
         id='password'
         required
       />
-
-
+<br></br>
+<br></br>
       {/* Submit button for the form */}
       <button type='submit' id='login-submit'>LOGIN</button>
     </form>
